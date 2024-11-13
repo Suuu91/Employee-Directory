@@ -16,15 +16,17 @@ app.get("/empoyees", (req, res) => {
   res.json(employees)
 })
 
-app.get("/employees/:id", (req, res) => {
-  const {id} = req.params
-  if (id < 0 || id >= employees.length) {
-    res.status(404).send("No Employee Found")
-  } else {
-    res.json(employees[id])
-  }
+app.get("employees/random", () => {
+  const i = Math.floor(Math.random())*employees.length
+  res.json(employees[i])
 })
 
-app.get("employees/random", () => {
-  res.json(employees.random())
+app.get("/employees/:id", (req, res) => {
+  const {id} = req.params
+  const employee = employees.find(e => e === +id)
+  if (employee) {
+    res.json(employees[id])
+  } else {
+    res.status(404).send("No Employee Found")
+  }
 })
